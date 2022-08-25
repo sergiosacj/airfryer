@@ -18,5 +18,8 @@ $(OBJDIR)/%.o : $(SRCDIR)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) $< -o $@
 
+run:
+	./bin/bin
+
 clean:
 	-rm -f $(OBJDIR)/*.o $(EXE)
