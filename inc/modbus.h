@@ -3,14 +3,13 @@
 
 typedef struct Message
 {
+  int uart_filestream;
   char address;
   char code;
   char subcode;
+  char *message;
 } Message;
 
-Message get_float(Message msg);
-Message get_integer(Message msg);
-Message send_float(Message msg);
-Message send_integer(Message msg);
+Message new_message(char code, char subcode);
 
 #endif
