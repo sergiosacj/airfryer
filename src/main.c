@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <definitions.h>
 #include <modbus.h>
+#include <lcd.h>
 
 void manage_time() {
   time_t rawtime;
@@ -15,6 +17,15 @@ void manage_time() {
 
 int main(int argc, char *argv[])
 {
+  // TEST DISPLAY LCD
+  DisplayLCD lcd = start_display();
+  if (lcd.fd == -1)
+    printf("Falha ao iniciar display!");
+  draw(&lcd);
+  sleep(10);
+  clear_display(&lcd);
+
+  // TEST MODBUS
   while(1) {
     int option;
     printf("Escolha X tal que:\n");
