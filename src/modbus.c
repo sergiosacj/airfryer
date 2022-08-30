@@ -11,6 +11,7 @@
 
 static char unb_registration[] = {7, 4, 3, 9};
 static int size_of_unb_registration = 4;
+static int size_of_message_response = 7; // address + code + subcode + data (4 bytes)
 
 Message new_message(char code, char subcode) {
   Message msg = {
@@ -80,14 +81,69 @@ static void message_read(Message *self, int message_size) {
   }
 }
 
+#define define_get_message(T) \
+T get_message_##T(char subcode) { \
+  Message msg = new_message(CODE_REQUEST, subcode); \
+  message_open_uart(&msg); \
+  message_request(&msg, unb_registration, size_of_unb_registration); \
+  sleep(1); \
+  message_read(&msg, size_of_message_response); \
+  T message_response; \
+  memcpy(&message_response, &(msg.message[3]), sizeof(T)); \
+  message_close_uart(&msg); \
+  return message_response; \
+}
+
+define_get_message(int)
+define_get_message(float)
+
+#define get_message(T) get_message_##T
+
 float get_internal_temperature() {
-  Message msg = new_message(CODE_REQUEST, SUB_CODE_REQUEST_INTERNAL_TEMPERATURE);
-  message_open_uart(&msg);
-  message_request(&msg, unb_registration, size_of_unb_registration);
-  sleep(1);
-  message_read(&msg, 7); // 0x00 0x23 0xC1 float
-  float internal_temperature;
-  memcpy(&internal_temperature, &(msg.message[3]), 4);
-  message_close_uart(&msg);
-  return internal_temperature;
+  return get_message(float)(SUB_CODE_REQUEST_INTERNAL_TEMPERATURE);
+}
+
+float get_reference_temperature() {
+  return get_message(float)(SUB_CODE_REQUEST_REF_TEMPERATURE);
+}
+
+int get_user_commands() {
+  return get_message(int)(SUB_CODE_REQUEST_USER_COMMANDS);
+}
+
+#define define_send_message(T) \
+void send_message_##T(char subcode, T data) { \
+  int data_size = sizeof(T); \
+  Message msg = new_message(CODE_SEND, subcode); \
+  message_open_uart(&msg); \
+  char message[data_size]; \
+  memcpy(message, &data, data_size); \
+  message_request(&msg, message, data_size); \
+  message_close_uart(&msg); \
+}
+
+define_send_message(int)
+define_send_message(short)
+define_send_message(float)
+
+#define send_message(T) send_message_##T
+
+void send_control_signal(int signal) {
+  send_message(int)(SUB_CODE_SEND_CONTROL_SIGNAL, signal);
+}
+
+void send_ref_signal(float signal) {
+  send_message(float)(SUB_CODE_SEND_REF_SIGNAL, signal);
+}
+
+void send_system_state(short state) {
+  send_message(short)(SUB_CODE_SEND_ON_OFF, state);
+}
+
+void send_working_state(short state) {
+  send_message(short)(SUB_CODE_SEND_WORKING_STATE, state);
+}
+
+void send_timer(int timer) {
+  send_message(int)(SUB_CODE_SEND_TIMER, timer);
 }
