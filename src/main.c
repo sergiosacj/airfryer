@@ -15,11 +15,21 @@ void manage_time() {
 
 int main(int argc, char *argv[])
 {
-  Message msg = {
-    .address = 0,
-    .code = 1,
-    .subcode = 2
-  };
-  get_integer(msg);
-  return 0;
+  while(1) {
+    int option;
+    printf("Escolha X tal que:\n");
+    printf("X == 1 -> Solicitar Inteiro.\n");
+    printf("X != 1 -> Encerrar programa.\n");
+    scanf("%d", &option);
+    float internal_temperature;
+
+    switch (option) {
+      case 1:
+        internal_temperature = get_internal_temperature();
+        printf("%f\n", internal_temperature);
+      default:
+        return 0;
+    }
+  }
 }
+

@@ -11,5 +11,6 @@ typedef struct Message
 } Message;
 
 Message new_message(char code, char subcode);
+float get_internal_temperature();
 
 #endif

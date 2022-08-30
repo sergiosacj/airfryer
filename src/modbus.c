@@ -80,4 +80,14 @@ static void message_read(Message *self, int message_size) {
   }
 }
 
+float get_internal_temperature() {
+  Message msg = new_message(CODE_REQUEST, SUB_CODE_REQUEST_INTERNAL_TEMPERATURE);
+  message_open_uart(&msg);
+  message_request(&msg, unb_registration, size_of_unb_registration);
+  sleep(1);
+  message_read(&msg, 7); // 0x00 0x23 0xC1 float
+  float internal_temperature;
+  memcpy(&internal_temperature, &(msg.message[3]), 4);
+  message_close_uart(&msg);
+  return internal_temperature;
 }
