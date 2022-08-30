@@ -116,9 +116,10 @@ void send_message_##T(char subcode, T data) { \
   int data_size = sizeof(T); \
   Message msg = new_message(CODE_SEND, subcode); \
   message_open_uart(&msg); \
-  char message[data_size]; \
-  memcpy(message, &data, data_size); \
-  message_request(&msg, message, data_size); \
+  char message[data_size + size_of_unb_registration]; \
+  memcpy(message, unb_registration, size_of_unb_registration); \
+  memcpy(&message[size_of_unb_registration], &data, data_size); \
+  message_request(&msg, message, data_size + size_of_unb_registration); \
   message_close_uart(&msg); \
 }
 
