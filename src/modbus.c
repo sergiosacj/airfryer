@@ -124,7 +124,7 @@ void send_message_##T(char subcode, T data) { \
 }
 
 define_send_message(int)
-define_send_message(short)
+define_send_message(char)
 define_send_message(float)
 
 #define send_message(T) send_message_##T
@@ -137,12 +137,12 @@ void send_ref_signal(float signal) {
   send_message(float)(SUB_CODE_SEND_REF_SIGNAL, signal);
 }
 
-void send_system_state(short state) {
-  send_message(short)(SUB_CODE_SEND_ON_OFF, state);
+void send_system_state(char state) {
+  send_message(char)(SUB_CODE_SEND_ON_OFF, state);
 }
 
-void send_working_state(short state) {
-  send_message(short)(SUB_CODE_SEND_WORKING_STATE, state);
+void send_working_state(char state) {
+  send_message(char)(SUB_CODE_SEND_WORKING_STATE, state);
 }
 
 void send_timer(int timer) {
