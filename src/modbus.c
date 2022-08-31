@@ -56,7 +56,7 @@ static void message_request(Message *self, char *data, int data_size) {
   memcpy(&buffer[message_size], data, data_size);
   message_size += data_size;
 
-  short crc = calcula_CRC(buffer, message_size), crc_size = 2;
+  short crc = calculate_CRC(buffer, message_size), crc_size = 2;
   memcpy(&buffer[message_size], &crc, crc_size);
   message_size += crc_size;
 

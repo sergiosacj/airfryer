@@ -44,7 +44,7 @@ void draw(DisplayLCD *self) {
   go_to_line(self, LINE2);
   display_string(self, "TR: ");
   display_float(self, self->reference_temperature);
-  display_string(self, " T: ");
+  display_string(self, " TT: ");
   display_int(self, self->timer);
 }
 
