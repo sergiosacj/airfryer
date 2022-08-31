@@ -3,9 +3,8 @@
 #include <string.h>
 #include <unistd.h>
 
-#include <definitions.h>
-#include <modbus.h>
 #include <lcd.h>
+#include <airfryer.h>
 
 void manage_time() {
   time_t rawtime;
@@ -18,9 +17,10 @@ void manage_time() {
 int main(int argc, char *argv[])
 {
   DisplayLCD lcd = start_display();
-  if (lcd.fd == -1)
+  if (lcd.fd == -1) {
     printf("Falha ao iniciar display!");
     return 1;
+  }
 
   start_airfryer();
   stop_airfryer();

@@ -2,13 +2,12 @@
 
 #include "pid.h"
 
-static double measure, control_signal;
+static double control_signal;
 static double reference = 0.0;
 static double Kp = 0.0;  // Ganho Proporcional
 static double Ki = 0.0;  // Ganho Integral
 static double Kd = 0.0;  // Ganho Derivativo
 static int T = 1.0;      // Período de Amostragem (ms)
-static unsigned long last_time;
 static double total_error, last_error = 0.0;
 static int control_signal_MAX = 100.0;
 static int control_signal_MIN = -100.0;
