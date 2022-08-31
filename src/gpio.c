@@ -7,6 +7,8 @@
 
 void setup_gpio() {
   wiringPiSetup();
+  pinMode(GPIO_RESISTOR, OUTPUT);
+  pinMode(GPIO_FAN, OUTPUT);
   softPwmCreate(GPIO_RESISTOR, 0, GPIO_PWM_RANGE);
   softPwmCreate(GPIO_FAN, FAN_MIN_VALUE, GPIO_PWM_RANGE);
 }
