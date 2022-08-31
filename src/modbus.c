@@ -44,6 +44,7 @@ static void message_open_uart(Message *self) {
 static void message_close_uart(Message *self) {
   free(self->message);
   close(self->uart_filestream);
+  printf("UART closed!\n");
 }
 
 static void message_request(Message *self, char *data, int data_size) {
