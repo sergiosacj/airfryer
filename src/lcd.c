@@ -36,16 +36,16 @@ void draw(DisplayLCD *self) {
   clear_display(self);
 
   go_to_line(self, LINE1);
-  display_string(self, "TI: ");
-  display_float(self, self->internal_temperature);
+  display_string(self, "Tempo: ");
+  display_int(self, self->timer);
   display_string(self, " MO: ");
   display_char(self, self->menu_option);
 
   go_to_line(self, LINE2);
-  display_string(self, "TR: ");
+  display_string(self, "TI: ");
+  display_float(self, self->internal_temperature);
+  display_string(self, " TR: ");
   display_float(self, self->reference_temperature);
-  display_string(self, " TT: ");
-  display_int(self, self->timer);
 }
 
 void clear_display(DisplayLCD *self) {
@@ -69,7 +69,7 @@ static void go_to_line(DisplayLCD *self, int line) {
 
 static void display_float(DisplayLCD *self, float f) {
   char buffer[20];
-  sprintf(buffer, "%.2f", f);
+  sprintf(buffer, "%.1f", f);
   display_string(self, buffer);
 }
 
