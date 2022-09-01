@@ -28,8 +28,8 @@
 #define KI 0.2
 #define KD 400.0
 
-#define GPIO_RESISTOR  16
-#define GPIO_FAN       18
+#define GPIO_RESISTOR  4
+#define GPIO_FAN       5
 #define GPIO_PWM_RANGE 100
 
 #endif

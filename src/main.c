@@ -6,22 +6,29 @@
 #include <lcd.h>
 #include <airfryer.h>
 
-void manage_time() {
-  time_t rawtime;
-  struct tm *timeinfo;
-  time(&rawtime);
-  timeinfo = localtime(&rawtime);
-  printf("%02d:%02d:%02d\n", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
-}
+// void manage_time() {
+//   time_t rawtime;
+//   struct tm *timeinfo;
+//   time(&rawtime);
+//   timeinfo = localtime(&rawtime);
+//   printf("%02d:%02d:%02d\n", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+// }
 
 int main(int argc, char *argv[])
 {
-  DisplayLCD lcd = start_display();
-  if (lcd.fd == -1) {
-    printf("Falha ao iniciar display!");
-    return 1;
-  }
-
-  start_airfryer();
-  stop_airfryer();
+  // DisplayLCD lcd = start_display();
+  // if (lcd.fd == -1) {
+  //   printf("Falha ao iniciar display!");
+  //   return 1;
+  // }
+  //
+  // start_airfryer();
+  // stop_airfryer();
+  setup_gpio();
+  update_resistor(100);
+  sleep(4);
+  update_fan(100);
+  sleep(2);
+  update_resistor(0);
+  update_fan(0);
 }
