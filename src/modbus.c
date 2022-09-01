@@ -87,7 +87,7 @@ T get_message_##T(char subcode) { \
   Message msg = new_message(CODE_REQUEST, subcode); \
   message_open_uart(&msg); \
   message_request(&msg, unb_registration, size_of_unb_registration); \
-  sleep(1); \
+  usleep(500000); \
   message_read(&msg, size_of_message_response); \
   T message_response; \
   memcpy(&message_response, &(msg.message[3]), sizeof(T)); \
