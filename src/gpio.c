@@ -1,4 +1,3 @@
-#include <gpio.h>
 #include <wiringPi.h>
 #include <softPwm.h>
 
