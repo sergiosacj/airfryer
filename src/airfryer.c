@@ -14,7 +14,7 @@ void start_airfryer() {
     int value_i = get_user_commands();
     if (value_i == USER_CMD_TURN_ON)
       break;
-    else
+    else if (value_i != 0)
       printf("Nenhum comando será processado com a airfryer desligada!\n");
   }
 
