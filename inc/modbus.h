@@ -15,7 +15,6 @@ float get_internal_temperature();
 float get_reference_temperature();
 int get_user_commands();
 void send_control_signal(int signal);
-void send_ref_signal(float signal);
 void send_system_state(char state);
 void send_working_state(char state);
 void send_timer(int timer);

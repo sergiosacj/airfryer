@@ -51,10 +51,9 @@ void test_uart() {
     printf("X == 2 -> get_reference_temperature.\n");
     printf("X == 3 -> get_user_commands.\n");
     printf("X == 4 -> send_control_signal.\n");
-    printf("X == 5 -> send_ref_signal.\n");
-    printf("X == 6 -> send_system_state.\n");
-    printf("X == 7 -> send_working_state.\n");
-    printf("X == 8 -> send_timer.\n");
+    printf("X == 5 -> send_system_state.\n");
+    printf("X == 6 -> send_working_state.\n");
+    printf("X == 7 -> send_timer.\n");
     printf("else -> Encerrar programa.\n");
     scanf("%d", &option);
     float value_f;
@@ -77,15 +76,12 @@ void test_uart() {
         send_control_signal(1);
         break;
       case 5:
-        send_ref_signal(1);
-        break;
-      case 6:
         send_system_state(1);
         break;
-      case 7:
+      case 6:
         send_working_state(1);
         break;
-      case 8:
+      case 7:
         send_timer(1);
         break;
       default:

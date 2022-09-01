@@ -134,10 +134,6 @@ void send_control_signal(int signal) {
   send_message(int)(SUB_CODE_SEND_CONTROL_SIGNAL, signal);
 }
 
-void send_ref_signal(float signal) {
-  send_message(float)(SUB_CODE_SEND_REF_SIGNAL, signal);
-}
-
 void send_system_state(char state) {
   send_message(char)(SUB_CODE_SEND_ON_OFF, state);
 }
