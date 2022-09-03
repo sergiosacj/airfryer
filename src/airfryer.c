@@ -65,10 +65,8 @@ void start_airfryer() {
       milisecond_counter++;
       milisecond_counter%=10;
       if (milisecond_counter == 5 || milisecond_counter == 0) {
-        process_user_commands();
         update_temperature();
-        printf("reference_temperature = %lf\n", lcd.reference_temperature);
-        printf("internal_temperature = %lf\n", lcd.internal_temperature);
+        process_user_commands();
       }
       if (milisecond_counter == 0)
         draw(&lcd);
@@ -271,4 +269,6 @@ static void update_temperature() {
   double internal_temperature = get_internal_temperature();
   if (internal_temperature < 100 && internal_temperature > 0)
     lcd.internal_temperature = internal_temperature;
+  printf("reference_temperature = %lf\n", lcd.reference_temperature);
+  printf("internal_temperature = %lf\n", lcd.internal_temperature);
 }
