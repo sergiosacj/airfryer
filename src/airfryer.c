@@ -47,9 +47,6 @@ void start_airfryer() {
   printf("Configurando tratamento de sinal SIGINT...\n");
   signal(SIGINT, handle_sigint);
 
-  printf("Reiniciando tempo para o tempo mínimo (1 minuto).\n");
-  send_timer(lcd.timer);
-
   printf("Aguardando comando para ligar a airfryer...\n");
   while (1) {
     int user_command = get_user_commands();
@@ -171,12 +168,12 @@ static void change_menu_option() {
     case 1:
       lcd.menu_option = 1;
       lcd.reference_temperature = 50;
-      lcd.timer = 60 * 3;
+      update_timer(60 * 3);
       break;
     case 2:
       lcd.menu_option = 2;
       lcd.reference_temperature = 40;
-      lcd.timer = 60 * 2;
+      update_timer(60 * 2);
       break;
     default:
       lcd.menu_option = 'M';
@@ -236,7 +233,7 @@ static void default_values() {
   lcd.internal_temperature = 0;
   control_signal = 0;
   milisecond_counter = 0;
-  lcd.timer = TIME_MIN;
+  update_timer(TIME_MIN);
   menu_option = 0;
   heating = false;
 }
