@@ -189,8 +189,9 @@ static void change_menu_option() {
 }
 
 static void update_timer(int value) {
-  if (lcd.timer + value > 0)
-    lcd.timer += value;
+  if (lcd.timer + value <= 0 && value == 60)
+    return;
+  lcd.timer += value;
   printf("Atualizando timer: %d\n", lcd.timer);
   send_timer(lcd.timer);
 }
@@ -237,7 +238,9 @@ static void default_values() {
   lcd.internal_temperature = 0;
   control_signal = 0;
   milisecond_counter = 0;
-  update_timer(TIME_MIN);
+  lcd.timer = TIME_MIN;
+  send_timer(lcd.timer);
+  printf("Atualizando timer: %d\n", lcd.timer);
   menu_option = 0;
   heating = false;
 }
