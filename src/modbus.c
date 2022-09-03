@@ -90,16 +90,16 @@ T get_message_##T(char subcode) { \
 }
 
 define_get_message(int)
-define_get_message(double)
+define_get_message(float)
 
 #define get_message(T) get_message_##T
 
-double get_internal_temperature() {
-  return get_message(double)(SUB_CODE_REQUEST_INTERNAL_TEMPERATURE);
+float get_internal_temperature() {
+  return (double) get_message(float)(SUB_CODE_REQUEST_INTERNAL_TEMPERATURE);
 }
 
-double get_reference_temperature() {
-  return get_message(double)(SUB_CODE_REQUEST_REF_TEMPERATURE);
+float get_reference_temperature() {
+  return (double) get_message(float)(SUB_CODE_REQUEST_REF_TEMPERATURE);
 }
 
 int get_user_commands() {
@@ -120,7 +120,7 @@ void send_message_##T(char subcode, T data) { \
 
 define_send_message(int)
 define_send_message(char)
-define_send_message(double)
+define_send_message(float)
 
 #define send_message(T) send_message_##T
 
