@@ -4,7 +4,7 @@
 #define FAN_MIN_VALUE 40
 
 void setup_gpio();
-void update_resistor();
-void update_fan();
+void update_resistor(float value);
+void update_fan(float value);
 
 #endif
