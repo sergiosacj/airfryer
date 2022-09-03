@@ -168,16 +168,15 @@ static void change_menu_option() {
   switch (menu_option) {
     case 1:
       lcd.menu_option = 'A';
-      lcd.reference_temperature = 50;
       update_timer(60 * 3);
       break;
     case 2:
       lcd.menu_option = 'B';
-      lcd.reference_temperature = 40;
       update_timer(60 * 2);
       break;
     default:
       lcd.menu_option = 'M';
+      update_timer(60);
       break;
   }
 
