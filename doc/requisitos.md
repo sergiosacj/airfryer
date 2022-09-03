@@ -35,3 +35,9 @@ Ligar/Desligar o Forno -> funcionamento da airfryer
 Inicia aquecimento/Cancela processo -> funcionamento do sistema interno da airfryer
 Tempo +|- -> chama a função pid\_atualiza\_referencia
 Menu -> altera o alimento (altera valores pré definidos)
+
+# Máquina de estados
+
+Consultar UART - 500ms
+Atualizar display LCD - 1s
+Log CSV - 1s
