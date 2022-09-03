@@ -27,8 +27,6 @@ static void message_open_uart(Message *self) {
   self->uart_filestream = open("/dev/serial0", O_RDWR | O_NOCTTY | O_NDELAY);
   if (self->uart_filestream == -1) {
     printf("Failed to open /dev/serial0.\n");
-  } else {
-    printf("UART started!\n");
   }
 
   struct termios options;
@@ -44,7 +42,6 @@ static void message_open_uart(Message *self) {
 static void message_close_uart(Message *self) {
   free(self->message);
   close(self->uart_filestream);
-  printf("UART closed!\n");
 }
 
 static void message_request(Message *self, char *data, int data_size) {
@@ -64,8 +61,6 @@ static void message_request(Message *self, char *data, int data_size) {
   int result = write(self->uart_filestream, &buffer, message_size);
   if (result < 0) {
     printf("UART TX error.\n");
-  } else {
-    printf("UART TX successful.\n");
   }
 }
 
@@ -78,7 +73,6 @@ static void message_read(Message *self, int message_size) {
     printf("(message_read) No data available.\n");
   } else {
     self->message[rx_length] = '\0';
-    printf("(message_read) %i bytes: %s\n", rx_length, self->message);
   }
 }
 

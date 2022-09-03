@@ -75,6 +75,7 @@ void start_airfryer() {
         draw(&lcd);
       usleep(100000);
     }
+    printf("Iniciando processo.\n");
     state_machine();
     printf("Processo finalizado.\n");
     default_values();
@@ -133,19 +134,27 @@ static void state_machine() {
 
 static void start_heating() {
   heating = true;
+  int count = 0;
   while (reference_temperature > internal_temperature) {
     reference_temperature = get_reference_temperature();
     control_internal_temperature(reference_temperature);
     usleep(200000);
+    if (count == 0)
+      draw_heating_cooling(&lcd, 'H');
+    count++; count%=5;
   }
 }
 
 static void stop_heating() {
   heating = false;
+  int count = 0;
   reference_temperature = 25; // environment temperature
   while (reference_temperature < internal_temperature) {
     control_internal_temperature(reference_temperature);
     usleep(200000);
+    if (count == 0)
+      draw_heating_cooling(&lcd, 'C');
+    count++; count%=5;
   }
 }
 
@@ -173,7 +182,7 @@ static void change_menu_option() {
       break;
   }
 
-  draw(&lcd);
+  printf("Alterando opção do menu: %c\n", lcd.menu_option);
 }
 
 static void update_timer(int value) {
@@ -181,6 +190,7 @@ static void update_timer(int value) {
   if (timer < TIME_MIN) {
     timer = TIME_MIN;
   }
+  printf("Atualizando timer: %d\n", timer);
   send_timer(timer);
 }
 
@@ -198,6 +208,7 @@ static void control_internal_temperature(int reference_temperature) {
     update_resistor(control_signal);
   }
 
+  printf("Enviando sinal de controle: %lf\n", control_signal);
   send_control_signal(control_signal);
 }
 

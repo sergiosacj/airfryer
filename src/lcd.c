@@ -48,6 +48,21 @@ void draw(DisplayLCD *self) {
   display_float(self, self->reference_temperature);
 }
 
+void draw_heating_cooling(DisplayLCD *self, char option) {
+  clear_display(self);
+
+  go_to_line(self, LINE1);
+  if (option == 'H')
+    display_string(self, "Aquecendo...");
+  else
+    display_string(self, "Resfriando...");
+  go_to_line(self, LINE2);
+  display_string(self, "TI: ");
+  display_float(self, self->internal_temperature);
+  display_string(self, " TR: ");
+  display_float(self, self->reference_temperature);
+}
+
 void clear_display(DisplayLCD *self) {
   lcd_byte(self, 0x01, LCD_CMD);
   lcd_byte(self, 0x02, LCD_CMD);
