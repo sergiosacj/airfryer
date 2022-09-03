@@ -42,9 +42,9 @@ void draw(DisplayLCD *self) {
   display_char(self, self->menu_option);
 
   go_to_line(self, LINE2);
-  display_string(self, "TI: ");
+  display_string(self, "TI:");
   display_double(self, self->internal_temperature);
-  display_string(self, " TR: ");
+  display_string(self, " TR:");
   display_double(self, self->reference_temperature);
 }
 
