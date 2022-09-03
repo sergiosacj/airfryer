@@ -22,6 +22,7 @@ static void update_timer(int value);
 static void control_internal_temperature();
 static void create_csv();
 static void update_csv();
+static void update_temperature();
 
 static double control_signal;
 static int milisecond_counter;
@@ -65,8 +66,7 @@ void start_airfryer() {
       milisecond_counter%=10;
       if (milisecond_counter == 5 || milisecond_counter == 0) {
         process_user_commands();
-        lcd.reference_temperature = get_reference_temperature();
-        lcd.internal_temperature = get_internal_temperature();
+        update_temperature();
         printf("reference_temperature = %lf\n", lcd.reference_temperature);
         printf("internal_temperature = %lf\n", lcd.internal_temperature);
       }
@@ -118,7 +118,7 @@ static void state_machine() {
     milisecond_counter++;
     milisecond_counter%=10;
     if (milisecond_counter == 5 || milisecond_counter == 0) {
-      lcd.reference_temperature = get_reference_temperature();
+      update_temperature();
       control_internal_temperature(lcd.reference_temperature);
       process_user_commands();
     }
@@ -138,7 +138,7 @@ static void start_heating() {
   heating = true;
   int count = 0;
   while (lcd.reference_temperature > lcd.internal_temperature) {
-    lcd.reference_temperature = get_reference_temperature();
+    update_temperature();
     control_internal_temperature(lcd.reference_temperature);
     usleep(200000);
     if (count == 0)
@@ -262,4 +262,14 @@ static void update_csv() {
   fprintf(file, ",%lf,%lf,%lf\n", lcd.internal_temperature, lcd.reference_temperature, control_signal);
 
   fclose(file);
+}
+
+static void update_temperature() {
+  lcd.reference_temperature = get_reference_temperature();
+  if (lcd.reference_temperature > 100)
+    lcd.reference_temperature = 60;
+  else if (lcd.reference_temperature < 100) {
+    lcd.reference_temperature = 30;
+  }
+  lcd.internal_temperature = get_internal_temperature();
 }
