@@ -18,8 +18,8 @@ void pid_setup_constants(double Kp_, double Ki_, double Kd_){
   Kd = Kd_;
 }
 
-void pid_update_reference(float reference){
-  reference = (double) reference;
+void pid_update_reference(double reference){
+  reference = reference;
 }
 
 double pid_control(double measure){

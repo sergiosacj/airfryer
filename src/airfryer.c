@@ -23,11 +23,10 @@ static void control_internal_temperature(int reference_temperature);
 static void create_csv();
 static void update_csv();
 
-static float reference_temperature;
+static double reference_temperature;
 static double internal_temperature;
 static double control_signal;
 static int milisecond_counter;
-static int timer;
 static int menu_option;
 static bool heating;
 DisplayLCD lcd;
@@ -45,7 +44,7 @@ void start_airfryer() {
   signal(SIGINT, handle_sigint);
 
   printf("Reiniciando tempo para o tempo mínimo (1 minuto).\n");
-  send_timer(timer);
+  send_timer(lcd.timer);
 
   printf("Aguardando comando para ligar a airfryer...\n");
   while (1) {
@@ -126,7 +125,7 @@ static void state_machine() {
       draw(&lcd);
       update_csv();
     }
-    if (timer <= 0)
+    if (lcd.timer <= 0)
       heating = false;
     usleep(100000);
   }
@@ -170,12 +169,12 @@ static void change_menu_option() {
     case 1:
       lcd.menu_option = 1;
       reference_temperature = 50;
-      timer = 60 * 3;
+      lcd.timer = 60 * 3;
       break;
     case 2:
       lcd.menu_option = 2;
       reference_temperature = 40;
-      timer = 60 * 2;
+      lcd.timer = 60 * 2;
       break;
     default:
       lcd.menu_option = 'M';
@@ -186,12 +185,12 @@ static void change_menu_option() {
 }
 
 static void update_timer(int value) {
-  timer += value;
-  if (timer < TIME_MIN) {
-    timer = TIME_MIN;
+  lcd.timer += value;
+  if (lcd.timer < TIME_MIN) {
+    lcd.timer = TIME_MIN;
   }
-  printf("Atualizando timer: %d\n", timer);
-  send_timer(timer);
+  printf("Atualizando timer: %d\n", lcd.timer);
+  send_timer(lcd.timer);
 }
 
 static void control_internal_temperature(int reference_temperature) {
@@ -256,7 +255,7 @@ static void update_csv() {
   timeinfo = localtime(&rawtime);
   fprintf(file, "%02d,%02d,%02d", timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year + 1900);
   fprintf(file, ",%02d,%02d,%02d", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
-  fprintf(file, ",%lf,%f,%lf", internal_temperature, reference_temperature, control_signal);
+  fprintf(file, ",%lf,%lf,%lf", internal_temperature, reference_temperature, control_signal);
 
   fclose(file);
 }

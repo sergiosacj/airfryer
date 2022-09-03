@@ -12,7 +12,7 @@ typedef struct Message
 
 Message new_message(char code, char subcode);
 double get_internal_temperature();
-float get_reference_temperature();
+double get_reference_temperature();
 int get_user_commands();
 void send_control_signal(int signal);
 void send_system_state(char state);

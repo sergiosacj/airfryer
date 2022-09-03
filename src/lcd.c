@@ -9,7 +9,7 @@
 
 static void lcd_init(DisplayLCD *self);
 static void go_to_line(DisplayLCD *self, int line);
-static void display_float(DisplayLCD *self, float f);
+static void display_double(DisplayLCD *self, double f);
 static void display_int(DisplayLCD *self, int i);
 static void display_char(DisplayLCD *self, char c);
 static void display_string(DisplayLCD *self, const char *s);
@@ -43,9 +43,9 @@ void draw(DisplayLCD *self) {
 
   go_to_line(self, LINE2);
   display_string(self, "TI: ");
-  display_float(self, self->internal_temperature);
+  display_double(self, self->internal_temperature);
   display_string(self, " TR: ");
-  display_float(self, self->reference_temperature);
+  display_double(self, self->reference_temperature);
 }
 
 void draw_heating_cooling(DisplayLCD *self, char option) {
@@ -58,9 +58,9 @@ void draw_heating_cooling(DisplayLCD *self, char option) {
     display_string(self, "Resfriando...");
   go_to_line(self, LINE2);
   display_string(self, "TI: ");
-  display_float(self, self->internal_temperature);
+  display_double(self, self->internal_temperature);
   display_string(self, " TR: ");
-  display_float(self, self->reference_temperature);
+  display_double(self, self->reference_temperature);
 }
 
 void clear_display(DisplayLCD *self) {
@@ -82,9 +82,9 @@ static void go_to_line(DisplayLCD *self, int line) {
   lcd_byte(self, line, LCD_CMD);
 }
 
-static void display_float(DisplayLCD *self, float f) {
+static void display_double(DisplayLCD *self, double lf) {
   char buffer[20];
-  sprintf(buffer, "%.1f", f);
+  sprintf(buffer, "%.1lf", lf);
   display_string(self, buffer);
 }
 

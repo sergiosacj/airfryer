@@ -12,11 +12,11 @@ void setup_gpio() {
   softPwmCreate(GPIO_FAN, FAN_MIN_VALUE, GPIO_PWM_RANGE);
 }
 
-void update_resistor(float value) {
+void update_resistor(double value) {
   softPwmWrite(GPIO_RESISTOR, value);
 }
 
-void update_fan(float value) {
+void update_fan(double value) {
   if (value < FAN_MIN_VALUE)
     value = FAN_MIN_VALUE;
   softPwmWrite(GPIO_FAN, value);

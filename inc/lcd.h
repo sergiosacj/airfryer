@@ -12,8 +12,8 @@
 typedef struct LCD
 {
   int fd;
-  float internal_temperature;
-  float reference_temperature;
+  double internal_temperature;
+  double reference_temperature;
   int timer;
   char menu_option;
 } DisplayLCD;
@@ -21,5 +21,6 @@ typedef struct LCD
 DisplayLCD start_display();
 void draw(DisplayLCD *self);
 void clear_display(DisplayLCD *self);
+void draw_heating_cooling(DisplayLCD *self, char option);
 
 #endif
