@@ -60,7 +60,6 @@ void start_airfryer() {
   send_system_state(1);
 
   while (1) {
-    milisecond_counter = 0;
     while (!heating) {
       milisecond_counter++;
       milisecond_counter%=10;
@@ -72,6 +71,7 @@ void start_airfryer() {
         draw(&lcd);
       usleep(100000);
     }
+    milisecond_counter = 0;
     printf("Iniciando processo.\n");
     state_machine();
     printf("Processo finalizado.\n");
@@ -136,7 +136,6 @@ static void start_heating() {
   heating = true;
   int count = 0;
   while (lcd.reference_temperature > lcd.internal_temperature) {
-    update_temperature();
     control_internal_temperature();
     usleep(200000);
     if (count == 0)
@@ -151,11 +150,6 @@ static void start_cooling() {
   int count = 0;
   lcd.reference_temperature = 25; // environment temperature
   while (lcd.reference_temperature < lcd.internal_temperature) {
-    double internal_temperature = get_internal_temperature();
-    if (internal_temperature < 100 && internal_temperature > 0)
-      lcd.internal_temperature = internal_temperature;
-    printf("(Resfriando) reference_temperature = %lf\n", lcd.reference_temperature);
-    printf("(Resfriando) internal_temperature = %lf\n", lcd.internal_temperature);
     control_internal_temperature();
     usleep(200000);
     if (count == 0)
@@ -207,7 +201,7 @@ static void control_internal_temperature() {
 
   control_signal = pid_control(lcd.internal_temperature);
 
-  if (control_signal < 100) {
+  if (control_signal < 0) {
     update_resistor(0);
     update_fan(-1 * control_signal);
   } else {
@@ -277,6 +271,4 @@ static void update_temperature() {
   double internal_temperature = get_internal_temperature();
   if (internal_temperature < 100 && internal_temperature > 0)
     lcd.internal_temperature = internal_temperature;
-  printf("reference_temperature = %lf\n", lcd.reference_temperature);
-  printf("internal_temperature = %lf\n", lcd.internal_temperature);
 }
