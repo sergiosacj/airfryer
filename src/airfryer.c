@@ -117,7 +117,7 @@ static void state_machine() {
     milisecond_counter%=10;
     if (milisecond_counter == 5 || milisecond_counter == 0) {
       update_temperature();
-      control_internal_temperature(lcd.reference_temperature);
+      control_internal_temperature();
       process_user_commands();
     }
     if (milisecond_counter == 0) {
@@ -137,7 +137,7 @@ static void start_heating() {
   int count = 0;
   while (lcd.reference_temperature > lcd.internal_temperature) {
     update_temperature();
-    control_internal_temperature(lcd.reference_temperature);
+    control_internal_temperature();
     usleep(200000);
     if (count == 0)
       draw_heating_cooling(&lcd, 'H');
@@ -151,7 +151,7 @@ static void start_cooling() {
   int count = 0;
   lcd.reference_temperature = 25; // environment temperature
   while (lcd.reference_temperature < lcd.internal_temperature) {
-    control_internal_temperature(lcd.reference_temperature);
+    control_internal_temperature();
     usleep(200000);
     if (count == 0)
       draw_heating_cooling(&lcd, 'C');
