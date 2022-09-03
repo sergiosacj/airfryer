@@ -34,4 +34,6 @@
 
 #define TIME_MIN 60
 
+#define CSV_FILE_NAME "log.csv"
+
 #endif
