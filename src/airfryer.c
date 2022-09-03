@@ -172,11 +172,13 @@ static void change_menu_option() {
   switch (menu_option) {
     case 1:
       lcd.menu_option = 'A';
-      update_timer(60 * 3);
+      lcd.timer = 60 * 3;
+      send_timer(lcd.timer);
       break;
     case 2:
       lcd.menu_option = 'B';
-      update_timer(60 * 2);
+      lcd.timer = 60 * 2;
+      send_timer(lcd.timer);
       break;
     default:
       lcd.menu_option = 'M';
