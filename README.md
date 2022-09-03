@@ -35,6 +35,16 @@ $ make run
 <p>Só é logado as operações, ou seja, só é escrito o que ocorre entre o botão "Iniciar" ser clicado e o processo ser finalizado.</p>
 <p>Sempre que um processo novo é iniciado, o log sobrescreve os dados do processo anterior.</p>
 
+## Display LCD
+
+<p>O display LCD possui 4 campos: </p>
+<ul>
+  <li>Tempo: diminui conforme o processo passa;</li>
+  <li>MO: qual modo foi selecionado;</li>
+  <li>TI: temperatura interna;</li>
+  <li>TR: temperatura de referência.</li>
+</ul>
+
 # Imagens
 
 Imagens de como funciona o sistema de modos.
