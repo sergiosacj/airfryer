@@ -154,8 +154,8 @@ static void start_cooling() {
     double internal_temperature = get_internal_temperature();
     if (internal_temperature < 100 && internal_temperature > 0)
       lcd.internal_temperature = internal_temperature;
-    printf("reference_temperature = %lf\n", lcd.reference_temperature);
-    printf("internal_temperature = %lf\n", lcd.internal_temperature);
+    printf("(Resfriando) reference_temperature = %lf\n", lcd.reference_temperature);
+    printf("(Resfriando) internal_temperature = %lf\n", lcd.internal_temperature);
     control_internal_temperature();
     usleep(200000);
     if (count == 0)
