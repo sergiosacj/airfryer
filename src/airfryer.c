@@ -66,6 +66,7 @@ void start_airfryer() {
       if (milisecond_counter == 5 || milisecond_counter == 0) {
         process_user_commands();
         lcd.reference_temperature = get_reference_temperature();
+        lcd.internal_temperature = get_internal_temperature();
       }
       if (milisecond_counter == 0)
         draw(&lcd);
