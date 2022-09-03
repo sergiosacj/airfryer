@@ -11,7 +11,7 @@ typedef struct Message
 } Message;
 
 Message new_message(char code, char subcode);
-float get_internal_temperature();
+double get_internal_temperature();
 float get_reference_temperature();
 int get_user_commands();
 void send_control_signal(int signal);

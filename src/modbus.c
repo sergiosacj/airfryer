@@ -97,11 +97,12 @@ T get_message_##T(char subcode) { \
 
 define_get_message(int)
 define_get_message(float)
+define_get_message(double)
 
 #define get_message(T) get_message_##T
 
-float get_internal_temperature() {
-  return get_message(float)(SUB_CODE_REQUEST_INTERNAL_TEMPERATURE);
+double get_internal_temperature() {
+  return get_message(double)(SUB_CODE_REQUEST_INTERNAL_TEMPERATURE);
 }
 
 float get_reference_temperature() {
