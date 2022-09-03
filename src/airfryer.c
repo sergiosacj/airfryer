@@ -202,9 +202,9 @@ static void update_timer(int value) {
 }
 
 static void control_internal_temperature() {
+  update_temperature();
   pid_update_reference(lcd.reference_temperature);
 
-  lcd.internal_temperature = get_internal_temperature();
   control_signal = pid_control(lcd.internal_temperature);
 
   if (control_signal < 100) {
