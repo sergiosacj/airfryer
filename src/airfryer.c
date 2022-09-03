@@ -256,7 +256,7 @@ static void update_csv() {
   timeinfo = localtime(&rawtime);
   fprintf(file, "%02d,%02d,%02d", timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year + 1900);
   fprintf(file, ",%02d,%02d,%02d", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
-  fprintf(file, ",%lf,%lf,%lf", lcd.internal_temperature, lcd.reference_temperature, control_signal);
+  fprintf(file, ",%lf,%lf,%lf\n", lcd.internal_temperature, lcd.reference_temperature, control_signal);
 
   fclose(file);
 }
