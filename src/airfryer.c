@@ -96,6 +96,8 @@ static void process_user_commands() {
       update_timer(60);
       break;
     case USER_CMD_DECREASE_TIMER:
+      if (lcd.timer == 60)
+        break;
       update_timer(-60);
       break;
     case USER_CMD_MENU:
@@ -184,9 +186,8 @@ static void change_menu_option() {
 
 static void update_timer(int value) {
   lcd.timer += value;
-  if (lcd.timer < TIME_MIN) {
-    lcd.timer = TIME_MIN;
-  }
+  if (lcd.timer < 0)
+    lcd.timer = 0;
   printf("Atualizando timer: %d\n", lcd.timer);
   send_timer(lcd.timer);
 }
