@@ -16,7 +16,7 @@ static void state_machine();
 static void handle_sigint(int signum);
 static void default_values();
 static void start_heating();
-static void stop_heating();
+static void start_cooling();
 static void change_menu_option();
 static void update_timer(int value);
 static void control_internal_temperature();
@@ -67,6 +67,8 @@ void start_airfryer() {
         process_user_commands();
         lcd.reference_temperature = get_reference_temperature();
         lcd.internal_temperature = get_internal_temperature();
+        printf("reference_temperature = %lf\n", lcd.reference_temperature);
+        printf("internal_temperature = %lf\n", lcd.internal_temperature);
       }
       if (milisecond_counter == 0)
         draw(&lcd);
@@ -90,7 +92,7 @@ static void process_user_commands() {
       break;
     case USER_CMD_CANCEL_PROCESS:
       if (heating)
-        stop_heating();
+        start_cooling();
       break;
     case USER_CMD_INCREASE_TIMER:
       update_timer(60);
@@ -132,6 +134,7 @@ static void state_machine() {
 }
 
 static void start_heating() {
+  printf("Aquecendo...\n");
   heating = true;
   int count = 0;
   while (lcd.reference_temperature > lcd.internal_temperature) {
@@ -144,7 +147,8 @@ static void start_heating() {
   }
 }
 
-static void stop_heating() {
+static void start_cooling() {
+  printf("Resfriando...\n");
   heating = false;
   int count = 0;
   lcd.reference_temperature = 25; // environment temperature
@@ -217,7 +221,7 @@ void stop_airfryer() {
 
 static void handle_sigint(int signum) {
   printf("Desligando airfryer...");
-  stop_heating();
+  start_cooling();
   send_timer(0);
   send_working_state(0);
   send_system_state(0);
