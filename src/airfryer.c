@@ -265,11 +265,10 @@ static void update_csv() {
 }
 
 static void update_temperature() {
-  lcd.reference_temperature = get_reference_temperature();
-  if (lcd.reference_temperature > 100)
-    lcd.reference_temperature = 60;
-  else if (lcd.reference_temperature < 100) {
-    lcd.reference_temperature = 30;
-  }
-  lcd.internal_temperature = get_internal_temperature();
+  double reference_temperature = get_reference_temperature();
+  if (reference_temperature < 100 && reference_temperature > 0)
+    lcd.reference_temperature = reference_temperature;
+  double internal_temperature = get_internal_temperature();
+  if (internal_temperature < 100 && internal_temperature > 0)
+    lcd.internal_temperature = internal_temperature;
 }
