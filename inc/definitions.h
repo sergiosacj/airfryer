@@ -32,4 +32,6 @@
 #define GPIO_FAN       5
 #define GPIO_PWM_RANGE 100
 
+#define TIME_MIN 60
+
 #endif
