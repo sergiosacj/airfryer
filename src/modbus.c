@@ -115,6 +115,8 @@ void send_message_##T(char subcode, T data) { \
   memcpy(message, unb_registration, size_of_unb_registration); \
   memcpy(&message[size_of_unb_registration], &data, data_size); \
   message_request(&msg, message, data_size + size_of_unb_registration); \
+  usleep(200000); \
+  message_read(&msg, data_size + size_of_unb_registration); \
   message_close_uart(&msg); \
 }
 
