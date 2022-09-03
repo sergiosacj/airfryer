@@ -66,8 +66,10 @@ void start_airfryer() {
     while (!heating) {
       milisecond_counter++;
       milisecond_counter%=10;
-      if (milisecond_counter == 5 || milisecond_counter == 0)
+      if (milisecond_counter == 5 || milisecond_counter == 0) {
         process_user_commands();
+        lcd.reference_temperature = get_reference_temperature();
+      }
       if (milisecond_counter == 0)
         draw(&lcd);
       usleep(100000);
