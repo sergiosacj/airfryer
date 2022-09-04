@@ -113,6 +113,7 @@ static void process_user_commands() {
 }
 
 static void state_machine() {
+  send_working_state(1);
   while (heating) {
     milisecond_counter++;
     milisecond_counter%=10;
