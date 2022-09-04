@@ -165,6 +165,7 @@ static void start_cooling() {
       draw_heating_cooling(&lcd, 'C');
     count++; count%=5;
   }
+  send_working_state(0);
 }
 
 static void change_menu_option() {
@@ -233,7 +234,6 @@ static void handle_sigint(int signum) {
   start_cooling();
   stop_gpio();
   send_timer(0);
-  send_working_state(0);
   send_system_state(0);
   clear_display(&lcd);
   int ret = 1;
