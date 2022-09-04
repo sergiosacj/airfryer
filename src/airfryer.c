@@ -132,6 +132,7 @@ static void state_machine() {
       heating = false;
     usleep(100000);
   }
+  start_cooling();
 }
 
 static void start_heating() {
