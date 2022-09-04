@@ -242,8 +242,7 @@ static void handle_sigint(int signum) {
 
 static void default_values() {
   printf("Reiniciando valores iniciais.\n");
-  lcd.reference_temperature = 0;
-  lcd.internal_temperature = 0;
+  update_temperature();
   control_signal = 0;
   milisecond_counter = 0;
   lcd.timer = TIME_MIN;
