@@ -37,4 +37,6 @@
 
 #define CSV_FILE_NAME "log.csv"
 
+#define I2C_FILE "/dev/i2c-1"
+
 #endif
