@@ -19,7 +19,7 @@ static void start_heating();
 static void start_cooling();
 static void change_menu_option();
 static void update_timer(int value);
-static void control_internal_temperature();
+static void control_internal_temperature(double *reference_temperature);
 static void create_csv();
 static void update_csv();
 static void update_temperature();
@@ -120,8 +120,7 @@ static void state_machine() {
     milisecond_counter++;
     milisecond_counter%=10;
     if (milisecond_counter == 5 || milisecond_counter == 0) {
-      update_temperature();
-      control_internal_temperature();
+      control_internal_temperature(&lcd.reference_temperature);
       process_user_commands();
     }
     if (milisecond_counter == 0) {
@@ -140,7 +139,7 @@ static void start_heating() {
   heating = true;
   int count = 0;
   while (lcd.reference_temperature > lcd.internal_temperature) {
-    control_internal_temperature();
+    control_internal_temperature(&lcd.reference_temperature);
     usleep(200000);
     if (count == 0)
       draw_heating_cooling(&lcd, 'H');
@@ -152,9 +151,9 @@ static void start_cooling() {
   printf("Resfriando...\n");
   heating = false;
   int count = 0;
-  lcd.reference_temperature = 25; // environment temperature
-  while (lcd.reference_temperature < lcd.internal_temperature) {
-    control_internal_temperature();
+  double environment_temperature = 25, acceptable_error = ACCEPTABLE_ERROR;
+  while (environment_temperature < lcd.internal_temperature + acceptable_error) {
+    control_internal_temperature(&environment_temperature);
     usleep(200000);
     if (count == 0)
       draw_heating_cooling(&lcd, 'C');
@@ -200,9 +199,9 @@ static void update_timer(int value) {
   send_timer(lcd.timer);
 }
 
-static void control_internal_temperature() {
+static void control_internal_temperature(double *reference_temperature) {
   update_temperature();
-  pid_update_reference(lcd.reference_temperature);
+  pid_update_reference(*reference_temperature);
 
   control_signal = pid_control(lcd.internal_temperature);
 

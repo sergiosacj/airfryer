@@ -27,6 +27,7 @@
 #define KP 30.0
 #define KI 0.2
 #define KD 400.0
+#define ACCEPTABLE_ERROR 3
 
 #define GPIO_RESISTOR  4
 #define GPIO_FAN       5
