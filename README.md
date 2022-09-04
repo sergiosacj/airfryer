@@ -34,12 +34,13 @@ $ make run
 
 ## Display LCD
 
-<p>O display LCD possui 4 campos: </p>
+<p>O display LCD possui 5 campos: </p>
 <ul>
   <li>Tempo: diminui conforme o processo passa;</li>
   <li>MO: qual modo foi selecionado;</li>
   <li>TI: temperatura interna;</li>
   <li>TR: temperatura de referência.</li>
+  <li>TA: temperatura ambiente (só aparece durante o resfriamento).</li>
 </ul>
 
 # Imagens

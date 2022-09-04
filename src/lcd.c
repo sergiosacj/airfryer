@@ -57,9 +57,12 @@ void draw_heating_cooling(DisplayLCD *self, char option) {
   else
     display_string(self, "Resfriando...");
   go_to_line(self, LINE2);
-  display_string(self, "TI: ");
+  display_string(self, "TI:");
   display_double(self, self->internal_temperature);
-  display_string(self, " TR: ");
+  if (option == 'H')
+    display_string(self, " TR:");
+  else
+    display_string(self, " TA:");
   display_double(self, self->reference_temperature);
 }
 
