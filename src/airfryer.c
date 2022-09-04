@@ -52,6 +52,7 @@ void start_airfryer() {
   printf("Aguardando comando para ligar a airfryer...\n");
   while (1) {
     int user_command = get_user_commands();
+    if (user_command == -1) continue;
     if (user_command == USER_CMD_TURN_ON)
       break;
     else if (user_command != 0)
@@ -276,9 +277,9 @@ static void update_csv() {
 
 static void update_temperature() {
   double reference_temperature = get_reference_temperature();
-  if (reference_temperature < 100 && reference_temperature > 0)
+  if (reference_temperature <= 100 && reference_temperature >= 0)
     lcd.reference_temperature = reference_temperature;
   double internal_temperature = get_internal_temperature();
-  if (internal_temperature < 100 && internal_temperature > 0)
+  if (internal_temperature <= 100 && internal_temperature >= 0)
     lcd.internal_temperature = internal_temperature;
 }

@@ -9,6 +9,11 @@
 #include <definitions.h>
 #include <modbus.h>
 
+static void message_open_uart(Message *self);
+static void message_close_uart(Message *self);
+static void message_request(Message *self, char *data, int data_size);
+static int message_read(Message *self, int message_size);
+
 static char unb_registration[] = {7, 4, 3, 9};
 static int size_of_unb_registration = 4;
 static int size_of_message_response = 7; // address + code + subcode + data (4 bytes)
@@ -64,7 +69,7 @@ static void message_request(Message *self, char *data, int data_size) {
   }
 }
 
-static void message_read(Message *self, int message_size) {
+static int message_read(Message *self, int message_size) {
   self->message = malloc(sizeof(char) * message_size);
   int rx_length = read(self->uart_filestream, self->message, message_size);
   if (rx_length < 0)
@@ -73,6 +78,7 @@ static void message_read(Message *self, int message_size) {
     printf("Nada para ler.\n");
   else
     self->message[rx_length] = '\0';
+  return rx_length;
 }
 
 #define define_get_message(T) \
@@ -81,11 +87,14 @@ T get_message_##T(char subcode) { \
   message_open_uart(&msg); \
   message_request(&msg, unb_registration, size_of_unb_registration); \
   usleep(200000); \
-  message_read(&msg, size_of_message_response); \
-  T message_response; \
-  memcpy(&message_response, &(msg.message[3]), sizeof(T)); \
-  message_close_uart(&msg); \
-  return message_response; \
+  int rx_length = message_read(&msg, size_of_message_response); \
+  if (rx_length > 0) { \
+    T message_response; \
+    memcpy(&message_response, &(msg.message[3]), sizeof(T)); \
+    message_close_uart(&msg); \
+    return message_response; \
+  } \
+  return -1; \
 }
 
 define_get_message(int)
