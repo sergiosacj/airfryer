@@ -250,6 +250,8 @@ static void default_values() {
 }
 
 static void create_csv() {
+  if (access(CSV_FILE_NAME, F_OK) == 0)
+    return; // file exists
   FILE *file = fopen(CSV_FILE_NAME, "w");
   fprintf(file, "Dia,Mês,Ano,Hora,Minuto,Segundo,TI,TR,Sinal de Controle\n");
   fclose(file);

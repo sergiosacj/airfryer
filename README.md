@@ -2,8 +2,6 @@
 
 <p>O arquivo "inc/definitions.h" possui todas as constantes utilizadas no trabalho. Caso seja necessário alterar alguma constante, basta editar esse arquivo.</p>
 
-<p>Um exemplo é o nome do arquivo de log CSV. Sempre que o programa é executado ele é recriado para armazenar apenas os logs daquela execução. Se precisar manter algum log, basta alterar o nome da definição CSV\_FILE\_NAME.</p>
-
 # Como executar o projeto
 
 ```
@@ -33,7 +31,6 @@ $ make run
 ## Log CSV
 
 <p>Só é logado as operações, ou seja, só é escrito o que ocorre entre o botão "Iniciar" ser clicado e o processo ser finalizado.</p>
-<p>Sempre que um processo novo é iniciado, o log sobrescreve os dados do processo anterior.</p>
 
 ## Display LCD
 
