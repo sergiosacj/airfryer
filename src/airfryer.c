@@ -284,5 +284,4 @@ static void update_temperature() {
     lcd.internal_temperature = internal_temperature;
 
   lcd.environment_temperature = get_environment_temperature();
-  printf("environment_temperature = %lf\n", lcd.environment_temperature);
 }
