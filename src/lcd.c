@@ -21,6 +21,7 @@ DisplayLCD start_display() {
     .fd = wiringPiI2CSetup(I2C_ADDR),
     .internal_temperature = 0,
     .reference_temperature = 0,
+    .environment_temperature = 0,
     .timer = 0,
     .menu_option = 'M',
   };
@@ -59,11 +60,14 @@ void draw_heating_cooling(DisplayLCD *self, char option) {
   go_to_line(self, LINE2);
   display_string(self, "TI:");
   display_double(self, self->internal_temperature);
-  if (option == 'H')
+  if (option == 'H') {
     display_string(self, " TR:");
-  else
+    display_double(self, self->reference_temperature);
+  }
+  else {
     display_string(self, " TA:");
-  display_double(self, self->reference_temperature);
+    display_double(self, self->environment_temperature);
+  }
 }
 
 void clear_display(DisplayLCD *self) {

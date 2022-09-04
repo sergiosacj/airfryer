@@ -14,6 +14,7 @@ typedef struct LCD
   int fd;
   double internal_temperature;
   double reference_temperature;
+  double environment_temperature;
   int timer;
   char menu_option;
 } DisplayLCD;

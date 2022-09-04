@@ -4,6 +4,7 @@
 #include <signal.h>
 #include <stdbool.h>
 
+#include <environment_temperature.h>
 #include <definitions.h>
 #include <modbus.h>
 #include <gpio.h>
@@ -19,7 +20,7 @@ static void start_heating();
 static void start_cooling();
 static void change_menu_option();
 static void update_timer(int value);
-static void control_internal_temperature(double *reference_temperature, char temperature_name);
+static void control_internal_temperature(char temperature_name);
 static void create_csv();
 static void update_csv();
 static void update_temperature();
@@ -125,7 +126,7 @@ static void state_machine() {
       update_csv();
     }
     if (milisecond_counter == 5 || milisecond_counter == 0) {
-      control_internal_temperature(&lcd.reference_temperature, 'R');
+      control_internal_temperature('R');
       process_user_commands();
     }
     if (lcd.timer <= 0)
@@ -140,7 +141,7 @@ static void start_heating() {
   heating = true;
   int count = 0;
   while (lcd.reference_temperature > lcd.internal_temperature) {
-    control_internal_temperature(&lcd.reference_temperature, 'R');
+    control_internal_temperature('R');
     usleep(200000);
     if (count == 0)
       draw_heating_cooling(&lcd, 'H');
@@ -152,9 +153,9 @@ static void start_cooling() {
   printf("Resfriando...\n");
   heating = false;
   int count = 0;
-  double environment_temperature = get_environment_temperature(), acceptable_error = ACCEPTABLE_ERROR;
-  while (environment_temperature < lcd.internal_temperature - acceptable_error) {
-    control_internal_temperature(&environment_temperature, 'A');
+  double acceptable_error = ACCEPTABLE_ERROR;
+  while (lcd.environment_temperature < lcd.internal_temperature - acceptable_error) {
+    control_internal_temperature('E');
     usleep(200000);
     if (count == 0)
       draw_heating_cooling(&lcd, 'C');
@@ -200,12 +201,12 @@ static void update_timer(int value) {
   send_timer(lcd.timer);
 }
 
-static void control_internal_temperature(double *reference_temperature, char temperature_name) {
+static void control_internal_temperature(char temperature_name) {
   update_temperature();
   if (temperature_name == 'E') // environment_temperature
-    pid_update_reference(*reference_temperature);
+    pid_update_reference(lcd.environment_temperature);
   else
-    pid_update_reference(lcd->reference_temperature);
+    pid_update_reference(lcd.reference_temperature);
 
   control_signal = pid_control(lcd.internal_temperature);
 
@@ -281,4 +282,7 @@ static void update_temperature() {
   double internal_temperature = get_internal_temperature();
   if (internal_temperature != -1)
     lcd.internal_temperature = internal_temperature;
+
+  lcd.environment_temperature = get_environment_temperature();
+  printf("environment_temperature = %lf\n", lcd.environment_temperature);
 }
