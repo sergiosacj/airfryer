@@ -13,6 +13,7 @@ static void message_open_uart(Message *self);
 static void message_close_uart(Message *self);
 static void message_request(Message *self, char *data, int data_size);
 static int message_read(Message *self, int message_size);
+static short validate_message(Message *self);
 
 static char unb_registration[] = {7, 4, 3, 9};
 static int size_of_unb_registration = 4;
@@ -73,12 +74,22 @@ static int message_read(Message *self, int message_size) {
   self->message = malloc(sizeof(char) * message_size);
   int rx_length = read(self->uart_filestream, self->message, message_size);
   if (rx_length < 0)
-    printf("Erro na leitura de %d bytes.\n", message_size);
+    printf("Descartando %d bytes lidos incorretamente.\n", message_size);
   else if (rx_length == 0)
     printf("Nada para ler.\n");
   else
     self->message[rx_length] = '\0';
-  return rx_length;
+
+  return validate_message(self);
+}
+
+static short validate_message(Message *self) {
+  if (self->code != self->message[1] || self->subcode != self->message[2]) {
+    printf("Mensagem inválida\n");
+    return 1;
+  }
+  printf("Mensagem válida\n");
+  return 0;
 }
 
 #define define_get_message(T) \
@@ -87,14 +98,13 @@ T get_message_##T(char subcode) { \
   message_open_uart(&msg); \
   message_request(&msg, unb_registration, size_of_unb_registration); \
   usleep(200000); \
-  int rx_length = message_read(&msg, size_of_message_response); \
-  if (rx_length > 0) { \
-    T message_response; \
-    memcpy(&message_response, &(msg.message[3]), sizeof(T)); \
-    message_close_uart(&msg); \
-    return message_response; \
-  } \
-  return -1; \
+  short message_valid = message_read(&msg, size_of_message_response); \
+  if (message_valid > 0) \
+    return -1; \
+  T message_response; \
+  memcpy(&message_response, &(msg.message[3]), sizeof(T)); \
+  message_close_uart(&msg); \
+  return message_response; \
 }
 
 define_get_message(int)
@@ -124,7 +134,6 @@ void send_message_##T(char subcode, T data) { \
   memcpy(&message[size_of_unb_registration], &data, data_size); \
   message_request(&msg, message, data_size + size_of_unb_registration); \
   usleep(200000); \
-  message_read(&msg, data_size + size_of_unb_registration); \
   message_close_uart(&msg); \
 }
 

@@ -139,10 +139,7 @@ static void start_heating() {
   printf("Aquecendo...\n");
   heating = true;
   int count = 0;
-  int temperature_counter = 0;
-  while (temperature_counter != 4) {
-    if(lcd.reference_temperature <= lcd.internal_temperature)
-      temperature_counter++;
+  while (lcd.reference_temperature > lcd.internal_temperature) {
     control_internal_temperature();
     usleep(200000);
     if (count == 0)
@@ -156,10 +153,7 @@ static void start_cooling() {
   heating = false;
   int count = 0;
   lcd.reference_temperature = 25; // environment temperature
-  int temperature_counter = 0;
-  while (temperature_counter != 4) {
-    if(lcd.reference_temperature >= lcd.internal_temperature)
-      temperature_counter++;
+  while (lcd.reference_temperature < lcd.internal_temperature) {
     control_internal_temperature();
     usleep(200000);
     if (count == 0)
@@ -277,9 +271,9 @@ static void update_csv() {
 
 static void update_temperature() {
   double reference_temperature = get_reference_temperature();
-  if (reference_temperature <= 100 && reference_temperature >= 0)
+  if (reference_temperature != -1)
     lcd.reference_temperature = reference_temperature;
   double internal_temperature = get_internal_temperature();
-  if (internal_temperature <= 100 && internal_temperature >= 0)
+  if (internal_temperature != -1)
     lcd.internal_temperature = internal_temperature;
 }
