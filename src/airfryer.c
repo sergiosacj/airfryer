@@ -119,14 +119,14 @@ static void state_machine() {
   while (heating) {
     milisecond_counter++;
     milisecond_counter%=10;
-    if (milisecond_counter == 5 || milisecond_counter == 0) {
-      control_internal_temperature(&lcd.reference_temperature, 'R');
-      process_user_commands();
-    }
     if (milisecond_counter == 0) {
       update_timer(-1);
       draw(&lcd);
       update_csv();
+    }
+    if (milisecond_counter == 5 || milisecond_counter == 0) {
+      control_internal_temperature(&lcd.reference_temperature, 'R');
+      process_user_commands();
     }
     if (lcd.timer <= 0)
       heating = false;
