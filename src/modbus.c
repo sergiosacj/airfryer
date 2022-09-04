@@ -67,7 +67,11 @@ static void message_request(Message *self, char *data, int data_size) {
 static void message_read(Message *self, int message_size) {
   self->message = malloc(sizeof(char) * message_size);
   int rx_length = read(self->uart_filestream, self->message, message_size);
-  if (rx_length > 0)
+  if (rx_length < 0)
+    printf("Erro na leitura de %d bytes.\n", message_size);
+  else if (rx_length == 0)
+    printf("Nada para ler.\n");
+  else
     self->message[rx_length] = '\0';
 }
 
