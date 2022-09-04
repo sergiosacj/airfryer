@@ -58,6 +58,7 @@ void start_airfryer() {
   }
 
   send_system_state(1);
+  printf("Airfryer foi ligada!\n");
 
   while (1) {
     while (!heating) {
