@@ -38,6 +38,7 @@ void start_airfryer() {
   }
 
   default_values();
+  setup_gpio();
 
   printf("Criando arquivo de log: %s\n", CSV_FILE_NAME);
   create_csv();
