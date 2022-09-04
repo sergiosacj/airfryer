@@ -256,7 +256,7 @@ static void create_csv() {
   if (access(CSV_FILE_NAME, F_OK) == 0)
     return; // file exists
   FILE *file = fopen(CSV_FILE_NAME, "w");
-  fprintf(file, "Dia,Mês,Ano,Hora,Minuto,Segundo,TI,TR,Sinal de Controle\n");
+  fprintf(file, "Dia,Mês,Ano,Hora,Minuto,Segundo,TI,TR,TA,Sinal de Controle\n");
   fclose(file);
 }
 
@@ -269,7 +269,8 @@ static void update_csv() {
   timeinfo = localtime(&rawtime);
   fprintf(file, "%02d,%02d,%02d", timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year + 1900);
   fprintf(file, ",%02d,%02d,%02d", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
-  fprintf(file, ",%.1lf,%.1lf,%.1lf\n", lcd.internal_temperature, lcd.reference_temperature, control_signal);
+  fprintf(file, ",%.1lf,%.1lf\n", lcd.internal_temperature, lcd.reference_temperature);
+  fprintf(file, ",%.1lf,%.1lf\n", lcd.environment_temperature, control_signal);
 
   fclose(file);
 }
