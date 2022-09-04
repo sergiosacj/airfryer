@@ -194,8 +194,7 @@ static void change_menu_option() {
 }
 
 static void update_timer(int value) {
-  if (lcd.timer + value <= 0 && value == TIME_MIN)
-    return;
+  if (lcd.timer + value < 0) return;
   lcd.timer += value;
   printf("Atualizando timer: %d\n", lcd.timer);
   send_timer(lcd.timer);
