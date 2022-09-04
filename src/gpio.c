@@ -21,3 +21,8 @@ void update_fan(double value) {
     value = FAN_MIN_VALUE;
   softPwmWrite(GPIO_FAN, value);
 }
+
+void stop_gpio() {
+  softPwmStop(GPIO_RESISTOR);
+  softPwmStop(GPIO_FAN);
+}

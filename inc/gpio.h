@@ -6,5 +6,6 @@
 void setup_gpio();
 void update_resistor(double value);
 void update_fan(double value);
+void stop_gpio();
 
 #endif

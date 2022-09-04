@@ -231,6 +231,7 @@ void stop_airfryer() {
 static void handle_sigint(int signum) {
   printf("Desligando airfryer...\n");
   start_cooling();
+  stop_gpio();
   send_timer(0);
   send_working_state(0);
   send_system_state(0);
